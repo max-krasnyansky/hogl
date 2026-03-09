@@ -44,3 +44,4 @@ bin.log*
 
 # Temporary editor files
 *.swp
+build/

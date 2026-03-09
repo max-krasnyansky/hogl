@@ -1,16 +1,7 @@
-string(REPLACE "@libdir@/cmake/hogl" "" _hogl_prefix ${CMAKE_CURRENT_LIST_DIR})
-set(_hogl_include_dir ${_hogl_prefix}@includedir@)
-set(_hogl_library_dir ${_hogl_prefix}@libdir@)
+@PACKAGE_INIT@
 
-if(TARGET hogl)
-  return()
-endif()
+include("${CMAKE_CURRENT_LIST_DIR}/hogl-targets.cmake")
+check_required_components(hogl)
 
-add_library(hogl INTERFACE IMPORTED)
-target_include_directories(hogl INTERFACE ${_hogl_include_dir})
-target_link_libraries(hogl INTERFACE ${_hogl_library_dir}/libhogl.so @HOGL_LIBS@)
-
-set(HOGL_VERSION "@VERSION@")
-set(HOGL_LIBRARIES hogl @HOGL_LIBS@)
-
-message(STATUS "HOGL version: ${HOGL_VERSION}   : ${_hogl_prefix}")
+set(HOGL_VERSION "@PROJECT_VERSION@")
+set(HOGL_LIBRARIES hogl::hogl)
