@@ -32,10 +32,12 @@ target_link_libraries(hogl-cook PRIVATE hogl)
 
 install(TARGETS hogl-recover hogl-cook
     DESTINATION ${CMAKE_INSTALL_BINDIR}
+    COMPONENT libhogl-tools
 )
 
 install(PROGRAMS hogl-grep hogl-trace
     DESTINATION ${CMAKE_INSTALL_BINDIR}
+    COMPONENT libhogl-tools
 )
 target_include_directories(hogl-recover PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(hogl-cook PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..)

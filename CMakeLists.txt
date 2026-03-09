@@ -52,6 +52,7 @@ endif()
 # Install headers
 install(DIRECTORY include/hogl
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        COMPONENT libhogl-dev
         FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 
 # pkg-config
@@ -66,7 +67,8 @@ set(HOGL_LIBS ${HOGL_PC_LIBS})
 
 configure_file(hogl.pc.in hogl.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/hogl.pc
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+        COMPONENT libhogl-dev)
 
 # CMake config files
 include(CMakePackageConfigHelpers)
@@ -84,4 +86,46 @@ install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/hogl-config.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/hogl-config-version.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/hogl
+    COMPONENT libhogl-dev
 )
+
+# Packaging
+set(CPACK_PACKAGE_NAME "hogl")
+set(CPACK_PACKAGE_VENDOR "Max Krasnyansky")
+set(CPACK_PACKAGE_CONTACT "Max Krasnyansky <max.krasnyansky@gmail.com>")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "High-performance, low-overhead logging framework")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+
+# We want DEB and RPM
+set(CPACK_GENERATOR "DEB;RPM")
+
+# Enable component-based packaging
+set(CPACK_DEB_COMPONENT_INSTALL ON)
+set(CPACK_RPM_COMPONENT_INSTALL ON)
+
+# Component definitions
+set(CPACK_COMPONENTS_ALL libhogl libhogl-dev libhogl-tools)
+
+# libhogl configuration
+set(CPACK_DEBIAN_LIBHOGL_PACKAGE_NAME "libhogl")
+set(CPACK_RPM_LIBHOGL_PACKAGE_NAME "libhogl")
+set(CPACK_COMPONENT_LIBHOGL_DESCRIPTION "High performance logging library shared libraries")
+
+# libhogl-dev configuration
+set(CPACK_DEBIAN_LIBHOGL-DEV_PACKAGE_NAME "libhogl-dev")
+set(CPACK_RPM_LIBHOGL-DEV_PACKAGE_NAME "libhogl-devel")
+set(CPACK_DEBIAN_LIBHOGL-DEV_PACKAGE_DEPENDS "libhogl (= ${PROJECT_VERSION})")
+set(CPACK_RPM_LIBHOGL-DEV_PACKAGE_REQUIRES "libhogl = ${PROJECT_VERSION}")
+set(CPACK_COMPONENT_LIBHOGL-DEV_DESCRIPTION "HOGL header files and development libraries")
+
+# libhogl-tools configuration
+set(CPACK_DEBIAN_LIBHOGL-TOOLS_PACKAGE_NAME "libhogl-tools")
+set(CPACK_RPM_LIBHOGL-TOOLS_PACKAGE_NAME "libhogl-tools")
+set(CPACK_DEBIAN_LIBHOGL-TOOLS_PACKAGE_DEPENDS "libhogl (= ${PROJECT_VERSION})")
+set(CPACK_RPM_LIBHOGL-TOOLS_PACKAGE_REQUIRES "libhogl = ${PROJECT_VERSION}")
+set(CPACK_COMPONENT_LIBHOGL-TOOLS_DESCRIPTION "HOGL tools like hogl-recover")
+
+include(CPack)
