@@ -41,8 +41,8 @@ if(RT_LIBRARY)
 endif()
 
 set_target_properties(hogl PROPERTIES
-    VERSION ${LIBRARY_VERSION}
-    SOVERSION ${SOVERSION}
+    VERSION ${HOGL_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
 install(TARGETS hogl

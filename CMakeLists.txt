@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(hogl VERSION 1.0 DESCRIPTION "HOly Grail of Logging" LANGUAGES C CXX)
+project(hogl VERSION 3.8.2 DESCRIPTION "HOly Grail of Logging" LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,15 +25,7 @@ if(NOT RT_LIBRARY)
     set(RT_LIBRARY "")
 endif()
 
-# Parse library version from libversion.mk
-file(READ "libversion.mk" LIBVERSION_CONTENT)
-string(REGEX MATCH "LIBRARY_VERSION=([0-9]+):([0-9]+):([0-9]+)" _ ${LIBVERSION_CONTENT})
-set(LIB_CURRENT ${CMAKE_MATCH_1})
-set(LIB_REVISION ${CMAKE_MATCH_2})
-set(LIB_AGE ${CMAKE_MATCH_3})
-math(EXPR SOVERSION "${LIB_CURRENT} - ${LIB_AGE}")
-set(LIBRARY_VERSION "${SOVERSION}.${LIB_AGE}.${LIB_REVISION}")
-
+set(HOGL_VERSION ${PROJECT_VERSION})
 set(HOGL_LIBS Threads::Threads ${RT_LIBRARY})
 
 set(HOGL_CXXFLAGS "-pthread")
